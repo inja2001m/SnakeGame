@@ -245,10 +245,9 @@ int inGame()
 
 int main()
 {
-	int n;
 	while (true)
 	{
-		if (n = inGame())
+		if (inGame())
 		{
 			system("cls");
 			continue;
