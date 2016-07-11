@@ -184,10 +184,10 @@ void render()
 		{
 			switch (map[i][j])
 			{
-			case Tile::WALL:  cout << "# "; break;
-			case Tile::ROAD:  cout << ". "; break;
-			case Tile::FRUIT: cout << "F "; break;
-			case Tile::SNAKE: cout << "O "; break;
+			case Tile::WALL:      cout << "# "; break;
+			case Tile::ROAD:      cout << ". "; break;
+			case Tile::FRUIT:     cout << "F "; break;
+			case Tile::SNAKE:     cout << "O "; break;
 			case Tile::SNAKEHEAD: cout << "@ "; break;
 			default: break;
 			}
