@@ -35,8 +35,8 @@ public:
 };
 
 int map[HEIGHT][WIDTH] = { Tile::ROAD };
-int tailNum;
-bool isBeFruit, isRun;
+int tailNum, clearNum;
+bool isBeFruit, isRun, isClear;
 CharDir playerDir;
 Snake fruit;
 vector<Snake> snakes;
@@ -62,7 +62,6 @@ void createFruit()
 	isBeFruit = true;
 }
 
-
 void update()
 {
 	int oldPosX, oldPosY;
@@ -86,6 +85,14 @@ void update()
 
 	if (isFirstTouch)
 	{
+		// 게임 클리어 구문
+		if (tailNum + 1 == clearNum)
+		{
+			isClear = true;
+
+			return;
+		}
+
 		oldPosX = snakes[0].posX;
 		oldPosY = snakes[0].posY;
 
@@ -118,6 +125,8 @@ void update()
 		if (map[snakes[0].posY][snakes[0].posX] == Tile::SNAKE || map[snakes[0].posY][snakes[0].posX] == Tile::WALL)
 		{
 			isRun = false;
+			isClear = false;
+
 			return;
 		}
 
@@ -153,22 +162,26 @@ void update()
 			}
 			else
 			{
-				tail.posX = snakes[tailNum].posX;
-				tail.posY = snakes[tailNum].posY;
+				// 마지막 꼬리에 생성
+				// tail.posX = snakes[tailNum].posX;
+				// tail.posY = snakes[tailNum].posY;
+
+				// 마지막 꼬리 뒤에 생성
+				tail.posX = oldPosX;
+				tail.posY = oldPosY;
 			}
 
 			snakes.push_back(tail);
 			++tailNum;
 			isBeFruit = false;
 		}
-
-		map[oldPosY][oldPosX] = Tile::ROAD;
+		else
+			map[oldPosY][oldPosX] = Tile::ROAD;
 
 		map[snakes[0].posY][snakes[0].posX] = Tile::SNAKEHEAD;
 
 		for (int i = 1; i <= tailNum; ++i)
 			map[snakes[i].posY][snakes[i].posX] = Tile::SNAKE;
-		
 
 		if (!isBeFruit)
 			createFruit();
@@ -218,6 +231,7 @@ void init()
 	isRun = true;
 	tailNum = 0;
 	playerDir = CharDir::NONE;
+	clearNum = (WIDTH - 2) + (HEIGHT - 2);
 
 	createFruit();
 	render();
@@ -236,7 +250,11 @@ int inGame()
 		Sleep(100);
 	}
 
-	cout << endl << "GAME OVER" << endl;
+	if(isClear) 
+		cout << endl << "★GAME CLEAR★" << endl;
+	else
+		cout << endl << "GAME OVER" << endl;
+	
 	cout << "재시작 하려면 아무 키나 누르세요";
 
 	if (_getch())
