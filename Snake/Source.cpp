@@ -88,6 +88,7 @@ void update()
 		// 게임 클리어 구문
 		if (tailNum + 1 == clearNum)
 		{
+			isRun = false;
 			isClear = true;
 
 			return;
